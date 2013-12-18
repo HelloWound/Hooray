@@ -1,34 +1,91 @@
 <html>
-  <head>
-    <style>
-      body {
-        font-family: "Helvetica Neue", helvetica, arial;
-        padding: 15px;
-      }
+	<head>
+		<title>Hooray</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <style type="text/css">
+            html {
+                background-color: #335577;
+                }
+            body {
+                font-family: "Lucida Console";
+                font-size: 13px;
+                }
+        </style>
+	</head>
+<script type="text/javascript">
+function heyListen(handle, msg, pureMsg, priv){
+	var map = {
+		//Common Greetings
+		"hi": reactGreet,
+		"hello": reactGreet,
+		"greetings": reactGreet,
+		"howdy": reactGreet,
+		"hiya": reactGreet,
+		"hi-ya": reactGreet,
+		"aloha": reactGreet,
+		"konnichiwa": reactGreet,
+		"yo": reactGreet,
+		//Common Commands
+		"echo": reactEcho,
+		"say": reactSay
+	}
+	map[msg[1]](handle, msg, pureMsg, priv);
+}
+//Responses to Common Greetings "Hooray, hi"
+function reactGreet(handle, msg, pureMsg, priv){ respond("Hi, "+handle+"!"); }
+//Actions of Common Commands
+function reactEcho(handle, msg, pureMsg, priv){ pureMsg.splice(0,2); respond("Echo: "+pureMsg.join(' ')); }
+function reactSay(handle, msg, pureMsg, priv){ pureMsg.splice(0,2); if(priv > 1){ respond(pureMsg.join(' ')); }}
 
-      ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-      }
+function helloWound(handle, msg, pureMsg, priv){return;}
 
-      ul li {
-        line-height: 1.4;
-      }
-    </style>
+function simpleReactSearch(handle, msg, pureMsg, priv){
+	if (priv > 0){
+		var map = {
+			"hooray": heyListen,
+			"hellowound": helloWound,
+			//Common Greetings "Hi, Hooray"
+			"hi": reactGreet,
+			"hello": reactGreet,
+			"greetings": reactGreet,
+			"howdy": reactGreet,
+			"hiya": reactGreet,
+			"hi-ya": reactGreet,
+			"aloha": reactGreet,
+			"konnichiwa": reactGreet,
+			"yo": reactGreet
+		}
+		map[msg[0]](handle, msg, pureMsg, priv);
+	}
+}
 
-    <script>
-      var host = location.origin.replace(/^http/, 'ws')
-      var ws = new WebSocket(host);
-      ws.onmessage = function (event) {
-        var li = document.createElement('li');
-        li.innerHTML = JSON.parse(event.data);
-        document.querySelector('#pings').appendChild(li);
-      };
-    </script>
-  </head>
-  <body>
-    <h1>Pings</h1>
-    <ul id='pings'></ul>
-  </body>
+function respond(response){
+	alert(response);
+}
+
+function chatReturn(){
+var sentence = document.forms["chatForm"]["chat"].value,
+msg = sentence.toLowerCase().match(/[\w';-]+/g),
+preMsg = msg[0],
+pureMsg = sentence.replace(/[]/g, ' ').split(/ +/);
+
+msg[0] = msg[0].replace(/^;/, '');
+	if (msg[0] !== preMsg){
+		msg.unshift("hooray");
+		pureMsg[0] = pureMsg[0].replace(/^;/, '');
+		pureMsg.unshift("hooray");
+	}
+simpleReactSearch("Wound",msg,pureMsg,2);
+}
+</script>
+	
+<script>
+
+</script>
+
+<form style="text-align:center" name="chatForm" onsubmit="chatReturn();" method="post">
+<input type="text" name="chat">
+<input type="submit" value="Send">
+</form>
+
 </html>
