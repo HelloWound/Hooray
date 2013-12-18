@@ -25,6 +25,7 @@ wss.on('connection', function(ws) {
         clearInterval(id);
     });
 });
-app.post(‘/*’, function(request, response) {
-response.send(contentbuffer.toString());
+server.post('/*', function(req, res){
+
+  res.sendfile('index.html');
 });
