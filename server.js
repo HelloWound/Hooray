@@ -25,3 +25,4 @@ wss.on('connection', function(ws) {
         clearInterval(id);
     });
 });
+app.use(express.static(__dirname)...)
