@@ -25,4 +25,6 @@ wss.on('connection', function(ws) {
         clearInterval(id);
     });
 });
-app.use(express.static(__dirname)...);
+app.post(‘/*’, function(request, response) {
+response.send(contentbuffer.toString());
+});
